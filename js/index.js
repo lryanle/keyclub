@@ -314,5 +314,77 @@ function mobileCompat() {
   }
 }
 
+$(document).ready(function() {
+    
+    var eventDataSourceURL = 'https://www.googleapis.com/calendar/v3/calendars/insoumis4circo95@gmail.com/events?key=AIzaSyCqKq2ABC9tGQtGkcAfvOD-5OCddkgOsLI';
+
+    var calendarupdateInterval = 5000;
+    var calendarAddedtoPage = false;
+    var eventsArray = [];
+
+    
+    // Grab json data from Google calendar API
+    function getData() {
+        eventsArray = [];
+        $.getJSON(
+            eventDataSourceURL,
+            function(result) {
+                $.each(result.items, function(i, val) {
+                    if (result.items[i].status === "confirmed" && result.items[i].start.dateTime) {
+                        if (!result.items[i].summary){
+                            result.items[i].summary = 'No Summary found in google calendar'
+                        }
+                        eventsArray.push({
+                            title: val.summary.replace(/['"]+/g, "") + '\n -- event #'+i,
+                            start: val.start.dateTime
+                        });
+                    } else {
+                        console.log("could not add due to lacking data ... event date/time or status not confirmed");
+                    }
+                });
+              drawCalendar();
+            }
+        );
+    }
+
+
+
+    function drawCalendar() {
+        if (calendarAddedtoPage == false) {
+            calendarAddedtoPage = true;
+            console.log('Create NEW Calendar for dom ' + new Date())
+            $("#calendar").fullCalendar({
+                defaultView: "month",
+                header: {
+                    left: "title",
+                    center: "",
+                    right: 'agendaDay,agendaWeek,month,prev,next'
+                },
+                buttonIcons: {
+                    prev: "left-single-arrow",
+                    next: "right-single-arrow",
+                    prevYear: "left-double-arrow",
+                    nextYear: "right-double-arrow"
+                }
+            });
+            $("#calendar").fullCalendar("removeEventSources");
+            $("#calendar").fullCalendar("addEventSource",eventsArray);
+            
+            setInterval(function(){
+                getData()
+            }, calendarupdateInterval)
+            
+        } else if (calendarAddedtoPage == true) {
+            console.log('Updating calendar data - ' + new Date())
+            
+            $("#calendar").fullCalendar('removeEvents');
+            $("#calendar").fullCalendar('addEventSource',eventsArray)
+        }  
+    }
+    
+    getData();
+});
+
+
 
 document.onload = randomBackgroundOnLoad(), /*cursorColor() --Deprecated,*/ homeHeaderGradient(), footer();

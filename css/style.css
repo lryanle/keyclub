@@ -6,15 +6,15 @@
 }
 @font-face {
   font-family: "Myriad Pro";
-  src: url(./fonts/MyriadPro-Regular.OTF);
+  src: url(./fonts/MyriadPro-Regular.otf);
 }
 @font-face {
   font-family: "Myriad Pro Semibold";
-  src: url(./fonts/MyriadPro-Semibold.OTF);
+  src: url(./fonts/MyriadPro-Semibold.otf);
 }
 @font-face {
   font-family: "Myriad Pro Bold";
-  src: url(./fonts/MyriadPro-Bold.OTF);
+  src: url(./fonts/MyriadPro-Bold.otf);
 }
 
 
@@ -90,6 +90,15 @@ body, .btn {
   transition: all 0.5s ease-in-out;
 }
 
+.fc-content {
+  white-space: normal !important;
+  padding: 7px
+}
+
+.fc-day-grid-event {
+  margin-bottom: 9px;
+}
+
 .navbar {
   background: transparent;
   border: none;
@@ -155,6 +164,15 @@ body, .btn {
   color: #fff;
   top: 0;
 }
+.header__hero__alt {
+  position: absolute;
+  width: 100%;
+  height: 400px;
+  padding-top: 75px;
+  text-align: left;
+  color: #fff;
+  top: 0;
+}
 .header__hero__small {
   position: absolute;
   width: 100%;
@@ -171,6 +189,15 @@ body, .btn {
   left: 0;
   width: 100%;
   height: 600px;
+  z-index: 0;
+}
+.header__hero__alt:before {
+  position: absolute;
+  content: '';
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 400px;
   z-index: 0;
 }
 .header__hero__small:before {
@@ -201,6 +228,13 @@ body, .btn {
   top: 0;
   left: 0;
 }
+.image-wrap-alt {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  top: 0;
+  left: 0;
+}
 .image-wrap-s {
   position: relative;
   width: 100%;
@@ -217,6 +251,22 @@ body, .btn {
   background-repeat: no-repeat;
 }
 .image-wrap .regular {
+  opacity: 1;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.image-wrap-alt .regular {
+  position: absolute;
+  width: 100%;
+  min-height: 400px;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  background-repeat: no-repeat;
+}
+
+.image-wrap-alt .regular {
   opacity: 1;
   background-attachment: fixed;
   background-position: center;
@@ -271,11 +321,11 @@ body, .btn {
 }
 
 section {
-  min-height: 300px;
+  min-height: 330px;
 }
 
 .section-intro {
-  padding: 50px 0 0 0;
+  padding: 30px 0 0 0;
   position: relative;
 }
 .section-intro-2 {
@@ -332,14 +382,14 @@ section {
 }
 .cs-style-3 figure:hover img {
   -webkit-transform: scale(1.2);
-          transform: scale(1.2);
+  transform: scale(1.2);
   opacity: 1;
 }
 .cs-style-3 figure:hover figcaption {
   opacity: 1;
   z-index: 100;
   -webkit-transform: translateY(0px);
-          transform: translateY(0px);
+  transform: translateY(0px);
 }
 .cs-style-3 figure img {
   max-width: 100%;
@@ -359,7 +409,7 @@ section {
   opacity: 0;
   bottom: 0;
   -webkit-transform: translateY(100%);
-          transform: translateY(100%);
+  transform: translateY(100%);
   transition: opacity 0.5s, -webkit-transform 0.5s;
   transition: transform 0.5s, opacity 0.5s;
   transition: transform 0.5s, opacity 0.5s, -webkit-transform 0.5s;
@@ -519,86 +569,6 @@ section {
   background: #2468bc;
   filter: opacity(75%);
 }
-.flickity-viewport {
-  height: 170px;
-}
-
-.staffs__section {
-  height: 500px;
-  padding-top: 50px;
-}
-
-.staffs__section:before {
-  position: absolute;
-  content: '';
-  width: 100%;
-  height: inherit;
-  z-index: 0;
-  background: #f5f5f5;
-  opacity: 0.8;
-  margin-top: -50px;
-}
-
-.staff {
-  text-align: center;
-  max-width: 850px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
-.staff h3 {
-  margin-top: 80px;
-}
-
-.staff-picture {
-  width: 100px;
-  border-radius: 50%;
-}
-
-.staff-name {
-  display: block;
-  font-size: 24px;
-  font-weight: 300;
-  padding: 10px 0 10px 0;
-}
-
-.staff-role {
-  display: block;
-  color: #0E3F28;
-  font-size: 1.125rem;
-}
-
-.flickity-page-dots {
-  bottom: -30px;
-}
-
-.flickity-page-dots .dot.is-selected {
-  background: #2468bc;
-}
-
-.flickity-page-dots .dot {
-  opacity: 1;
-  background: white;
-}
-
-.flickity-page-dots .dot:hover {
-  background: #2468bc;
-  filter: opacity(50%);
-}
-
-.flickity-prev-next-button {
-  background: #2468bc;
-}
-
-.flickity-prev-next-button .arrow {
-  fill: #fff;
-}
-
-.flickity-prev-next-button:hover {
-  background: #2468bc;
-  filter: opacity(75%);
-}
-
 .flickity-viewport {
   height: 170px;
 }
