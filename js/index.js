@@ -316,7 +316,7 @@ function mobileCompat() {
 
 $(document).ready(function() {
     
-    var eventDataSourceURL = 'https://www.googleapis.com/calendar/v3/calendars/moorehskeyclub@gmail.com/events?key=NTM4MmMwOTUxbzZnNW5xZ241bTUxMWxycDMgbW9vcmVoc2tleWNsdWJAbQ';
+    var eventDataSourceURL = 'https://www.googleapis.com/calendar/v3/calendars/moorehskeyclub@gmail.com/events?key=AIzaSyCqzE0732Ig__pum0LBB-3TA9ofDhITgyo';
 
     var calendarupdateInterval = 5000;
     var calendarAddedtoPage = false;
