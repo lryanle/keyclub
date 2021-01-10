@@ -31,7 +31,7 @@ function hexToRgba(hex, alpha) {
 }
 
 
-//* rgba 2 hex
+//* rgba to hex
 function rgb2hex(rgb) {
   rgb = rgb.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i);
   return (rgb && rgb.length === 4) ? "#" +
@@ -169,11 +169,16 @@ var cursor = {
 }
 
 //* Mobile toggles
-if ((document.URL.indexOf("index.html") > -1) && isMobile == false) { 
-    document.getElementById('mobileInsert1').innerHTML = `<div class="image"><a href="https://docs.wixstatic.com/ugd/95f27c_72a48d50ec884b488dbb6e6f07ff9c1d.pdf" target="_blank" style="font-weight: bold; text-decoration: none; color: inherit;"><img class="img-responsive" src="media/charms.png" style="transform: scale(0.7);"></a></div>`;
+if ((document.URL.indexOf("calendar.html") > -1) && isMobile == false) { 
+    /*document.getElementById('mobileInsert1').innerHTML = `<div class="image"><a href="https://docs.wixstatic.com/ugd/95f27c_72a48d50ec884b488dbb6e6f07ff9c1d.pdf" target="_blank" style="font-weight: bold; text-decoration: none; color: inherit;"><img class="img-responsive" src="media/charms.png" style="transform: scale(0.7);"></a></div>`;
     document.getElementById('mobileInsert2').innerHTML = `<div class="image"><a href="https://docs.wixstatic.com/ugd/95f27c_3d99b0a15db34dd6a0f3a648342f27e0.pdf" target="_blank" style="text-decoration: none; color: inherit;"><img class="img-responsive" src="media/remind.png" style="transform: scale(0.7);"></a></div>`;
-    document.getElementById('mobileInsert3').innerHTML = `<div class="image"><a href="#index" style="text-decoration: none; color: inherit;"><img class="img-responsive" src="media/calendar.png" style="transform: scale(0.7);"></a></div>`;
+    document.getElementById('mobileInsert3').innerHTML = `<div class="image"><a href="#index" style="text-decoration: none; color: inherit;"><img class="img-responsive" src="media/calendar.png" style="transform: scale(0.7);"></a></div>`;*/
+
+    document.getElementById('calMobileToggle').innerHTML = `<div id="calendar"></div>`;
+
     /*cursor.init(); --Deprecated*/
+} else if (isMobile == true) {
+  document.getElementById('calMobileToggle').innerHTML = `<a href="https://calendar.google.com/calendar/u/0?cid=bW9vcmVoc2tleWNsdWJAZ21haWwuY29t" style="color: red; text-decoration: inherit; text-align: center; font-size: 25px">Calendar view isn't available on mobile. Please click here to visit an alternate version on Google Calendar.</a>`;
 }
 
 //* Random color between 2 colors
@@ -303,7 +308,6 @@ function mobileCompat() {
   if (isMobile == true) {
     if (this.scrollY < 180) {
       if (($('.navbar-collapse').attr('aria-expanded') === "false") || ($('.navbar-collapse').attr('aria-expanded') === undefined)) {
-        console.log("hey bit");
         document.getElementById("nav").setAttribute("style", `background: linear-gradient(200deg, ${hexToRgba(gc1, 0.75)} 0%, ${hexToRgba(gc2, 0.75)} 100%);`)
         $('.navbar').addClass('nav--sticky');
       } else if ($('.navbar-collapse').attr('aria-expanded') === "true") {
@@ -331,7 +335,7 @@ $(document).ready(function() {
       eventDataSourceURL,
       function(result) {
         $.each(result.items, function(i, val) {
-          if (result.items[i].status === "confirmed" && result.items[i].start.dateTime) {
+          if (result.items[i].status === "confirmed") {
             if (!result.items[i].summary){
               result.items[i].summary = '(no title)'
             }
@@ -340,11 +344,33 @@ $(document).ready(function() {
             } else {
               fillerDescription = "";
             }
-            eventsArray.push({
-              title: val.summary.replace(/['"]+/g, "") + fillerDescription,
-              start: val.start.dateTime,
-              end: val.end.dateTime
-            });
+            
+            if (result.items[i].start.dateTime) {
+              eventsArray.push({
+                title: val.summary.replace(/['"]+/g, "") + fillerDescription,
+                start: val.start.dateTime,
+                end: val.end.dateTime,
+                backgroundColor: gc1,
+                displayEventEnd: {
+                  month: true,
+                  basicWeek: true,
+                  "default": true
+                }
+              });
+            } else if (result.items[i].start.date) {
+              eventsArray.push({
+                title: val.summary.replace(/['"]+/g, "") + fillerDescription,
+                start: val.start.date,
+                end: val.end.date,
+                backgroundColor: gc1,
+                allDay: true,
+                displayEventEnd: {
+                  month: true,
+                  basicWeek: true,
+                  "default": true
+                }
+              });
+            }
           } else {
             console.log("could not add due to lacking data ... event date/time or status not confirmed");
           }
@@ -372,6 +398,28 @@ $(document).ready(function() {
           next: "right-single-arrow",
           prevYear: "left-double-arrow",
           nextYear: "right-double-arrow"
+        },
+        eventMouseover: function(calEvent) {  
+          if (calEvent.allDay == false) {
+            var durationTime = moment(calEvent.start).format('h:mma') + " - " + moment(calEvent.end).format('h:mma')
+          } else {
+            var durationTime = 'All Day';
+          }
+
+          var tooltip = '<div class="tooltipevent" style="position:absolute; z-index:1000; background-color:#666; color:#fff; text-align:center; padding:5px; border-radius:6px; opacity:0; transition:opacity .01s;">' + durationTime + '\n\n' + '</div>';
+          $("body").append(tooltip);
+          $(this).mouseover(function() {
+            $(this).css('z-index', 10000);
+            $('.tooltipevent').fadeIn('5000');
+            $('.tooltipevent').fadeTo('10', 0.8);
+          }).mousemove(function(e) {
+            $('.tooltipevent').css('top', e.pageY + 10);
+            $('.tooltipevent').css('left', e.pageX + 20);
+          });
+        },
+        eventMouseout: function() {
+          $(this).css('z-index', 8);
+          $('.tooltipevent').remove();
         }
       });
       $("#calendar").fullCalendar("removeEventSources");
