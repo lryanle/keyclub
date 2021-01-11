@@ -444,6 +444,74 @@ section {
   margin-top: 30px;
 }
 
+@media screen and (max-width: 768px) {
+  .gallery .filters a {
+    display: block;
+    background: transparent;
+    float: none;
+    text-align: center;
+  }
+  .gallery .filters a:before,
+  .gallery .filters a:after {
+    content: '';
+    border-bottom: solid 1px #0E3F28;
+    position: absolute;
+    bottom: 0;
+    width: 0;
+    transition: all 0.2s ease;
+  }
+  .gallery .filters a:before {
+    left: 0;
+  }
+  .gallery .filters a:after {
+    right: 0;
+  }
+  .gallery .filters a:hover:before,
+  .gallery .filters a:hover:after {
+    width: 50%;
+  }
+}
+
+.gallery .filter {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  text-align: center;
+}
+
+.gallery .filter li {
+  display: inline-block;
+  margin: 0;
+}
+
+.gallery .filter li:before {
+  display: inline-block;
+  content: "/";
+  padding: 0 25px 0 19px;
+  color: rgba(0, 0, 0, 0.2);
+}
+
+.gallery .filter li:first-child:before {
+  display: none;
+}
+
+.gallery .filter li a {
+  text-transform: uppercase;
+  font-size: 14px;
+  color: #cecece;
+}
+
+.gallery .filter li a:hover,
+.gallery .filter li a:focus,
+.gallery .filter li a.active {
+  color: #0E3F28;
+  text-decoration: none;
+}
+
+.gallery-cell {
+  width: 100%;
+}
+
 #to-top {
   display: none;
   background-color: #fff;
@@ -544,7 +612,7 @@ section {
   filter: opacity(75%);
 }
 .flickity-viewport {
-  height: 170px;
+  height: 170px !important;
 }
 
 footer {
