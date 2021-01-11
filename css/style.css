@@ -444,33 +444,6 @@ section {
   margin-top: 30px;
 }
 
-@media screen and (max-width: 768px) {
-  .gallery .filters a {
-    display: block;
-    background: transparent;
-    float: none;
-    text-align: center;
-  }
-  .gallery .filters a:before,
-  .gallery .filters a:after {
-    content: '';
-    border-bottom: solid 1px #0E3F28;
-    position: absolute;
-    bottom: 0;
-    width: 0;
-    transition: all 0.2s ease;
-  }
-  .gallery .filters a:before {
-    left: 0;
-  }
-  .gallery .filters a:after {
-    right: 0;
-  }
-  .gallery .filters a:hover:before,
-  .gallery .filters a:hover:after {
-    width: 50%;
-  }
-}
 #to-top {
   display: none;
   background-color: #fff;
@@ -504,10 +477,6 @@ section {
 
 .main-gallery {
   margin-top: 30px;
-}
-
-.gallery-cell {
-  width: 100%;
 }
 
 .staffs__section {
