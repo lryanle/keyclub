@@ -178,11 +178,7 @@ if ((document.URL.indexOf("calendar") > -1) && isMobile == false) {
 
     /*cursor.init(); --Deprecated*/
 } else if (isMobile == true) {
-  try {
-    document.getElementById('calMobileToggle').innerHTML = `<a href="https://calendar.google.com/calendar/u/0?cid=bW9vcmVoc2tleWNsdWJAZ21haWwuY29t" style="color: red; text-decoration: inherit; text-align: center; font-size: 25px">Calendar view isn't available on mobile. Please click here to visit an alternate version on Google Calendar.</a>`;
-  } catch (e) {
-    console.error(e);
-  }
+  document.getElementById('calMobileToggle').innerHTML = `<a href="https://calendar.google.com/calendar/u/0?cid=bW9vcmVoc2tleWNsdWJAZ21haWwuY29t" style="color: red; text-decoration: inherit; text-align: center; font-size: 25px">Calendar view isn't available on mobile. Please click here to visit an alternate version on Google Calendar.</a>`;
 }
 
 //* Random color between 2 colors
@@ -444,21 +440,11 @@ $(document).ready(function() {
   getData();
 });
 
-
-
-//* Gallery
-(function gallery() {
+(function(){
   var i, e, d = document, s = "script";i = d.createElement("script");i.async = 1;
   i.src = "https://cdn.curator.io/published/3e8bd139-4c09-4238-8cdf-07d62e6cabff_dgd092o6.js";
   e = d.getElementsByTagName(s)[0];e.parentNode.insertBefore(i, e);
-
-  var i, e, d = document, s = "script";i = d.createElement("script");i.async = 1;
-  i.src = "https://cdn.curator.io/published/3e8bd139-4c09-4238-8cdf-07d62e6cabff_oglmd8dw.js";
-  e = d.getElementsByTagName(s)[0];e.parentNode.insertBefore(i, e);
 })();
-
-
-
 
 
 
