@@ -115,6 +115,10 @@ body, .btn {
   max-width: 200px;
 }
 
+.crt-logo {
+  opacity: 0;
+}
+
 .navbar {
   background: transparent;
   border: none;
