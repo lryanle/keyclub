@@ -119,6 +119,23 @@ body, .btn {
   opacity: 0;
 }
 
+.crt-grid-post .crt-post-hover {
+  z-index: 0 !important;
+}
+
+.crt-widget.crt-widget-branded {
+  padding-bottom: 75px !important;
+  padding: 0 30px 75px 30px;
+}
+
+.crt-icon-behance {
+  opacity: 0;
+}
+
+.crt-icon-instagram {
+  opacity: 0;
+}
+
 .navbar {
   background: transparent;
   border: none;
@@ -354,7 +371,6 @@ section {
 }
 .section-white {
   background: white;
-  padding: 50px 0;
 }
 
 #achievements {
@@ -362,37 +378,6 @@ section {
   color: inherit;
   text-decoration: inherit;
   font-weight: 350;
-}
-
-.gallery .filter {
-  list-style: none;
-  padding: 0;
-  margin: 20px 0;
-  text-align: center;
-}
-.gallery .filter li {
-  display: inline-block;
-  margin: 0;
-}
-.gallery .filter li:before {
-  display: inline-block;
-  content: "/";
-  padding: 0 25px 0 19px;
-  color: rgba(0, 0, 0, 0.2);
-}
-.gallery .filter li:first-child:before {
-  display: none;
-}
-.gallery .filter li a {
-  text-transform: uppercase;
-  font-size: 14px;
-  color: #cecece;
-}
-.gallery .filter li a:hover,
-.gallery .filter li a:focus,
-.gallery .filter li a.active {
-  color: #0E3F28;
-  text-decoration: none;
 }
 
 .cs-style-3 figure {
