@@ -5,18 +5,19 @@ if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elain
   isMobile = true;
 }
 
+let path = location.pathname.substring(location.pathname.lastIndexOf("/") + 1)
 
 //* Inefficient loading screen stuff. Feel free to create a pull request to fix it
 
-
-
 //* Flickity .main-gallery
-var flkty = new Flickity('.main-gallery', {
-  cellAlign: 'left',
-  wrapAround: true,
-  prevNextButtons: true,
-  autoPlay: 5000
-});
+if (path.includes("")) {
+  var flkty = new Flickity('.main-gallery', {
+    cellAlign: 'left',
+    wrapAround: true,
+    prevNextButtons: true,
+    autoPlay: 5000
+  });
+}
 
 //* hex to rgba
 function hexToRgba(hex, alpha) {
@@ -296,7 +297,7 @@ let winWidth = window.innerWidth - 120;
     if ($(this).scrollTop() > 180) {
       $('.navbar').addClass('nav--sticky');
       addNavHeaderGradient();
-      document.getElementById("colorGradient").setAttribute("style", `filter: invert(100%);`);
+      document.getElementById("colorGradient").setAttribute("style", ``/*`filter: invert(100%);`*/);
     } else {
       $('.navbar').removeClass('nav--sticky');
       remNavHeaderGradient();
@@ -322,142 +323,166 @@ function mobileCompat() {
   }
 }
 
-$(document).ready(function() {
-  
-  var eventDataSourceURL = 'https://www.googleapis.com/calendar/v3/calendars/moorehskeyclub@gmail.com/events?key=AIzaSyCqzE0732Ig__pum0LBB-3TA9ofDhITgyo';
+if (path.includes("calendar")) {
+  $(document).ready(function() {
+    
+    var eventDataSourceURL = 'https://www.googleapis.com/calendar/v3/calendars/moorehskeyclub@gmail.com/events?key=AIzaSyCqzE0732Ig__pum0LBB-3TA9ofDhITgyo';
 
-  var calendarupdateInterval = 10000;
-  var calendarAddedtoPage = false;
-  var eventsArray = [];
+    var calendarupdateInterval = 10000;
+    var calendarAddedtoPage = false;
+    var eventsArray = [];
 
-  
-  // Grab json data from Google calendar API
-  function getData() {
-    eventsArray = [];
-    let fillerDescription = "";
-    $.getJSON(
-      eventDataSourceURL,
-      function(result) {
-        $.each(result.items, function(i, val) {
-          if (result.items[i].status === "confirmed") {
-            if (!result.items[i].summary){
-              result.items[i].summary = '(no title)'
-            }
-            if(val.description != undefined) {
-              fillerDescription = "\n\n" + val.description;
+    
+    // Grab json data from Google calendar API
+    function getData() {
+      eventsArray = [];
+      let fillerDescription = "";
+      $.getJSON(
+        eventDataSourceURL,
+        function(result) {
+          $.each(result.items, function(i, val) {
+            if (result.items[i].status === "confirmed") {
+              if (!result.items[i].summary){
+                result.items[i].summary = '(no title)'
+              }
+              if(val.description != undefined) {
+                fillerDescription = "\n\n" + val.description;
+              } else {
+                fillerDescription = "";
+              }
+              
+              if (result.items[i].start.dateTime) {
+                eventsArray.push({
+                  title: val.summary.replace(/['"]+/g, "") + fillerDescription,
+                  start: val.start.dateTime,
+                  end: val.end.dateTime,
+                  backgroundColor: gc1,
+                  displayEventEnd: {
+                    month: true,
+                    basicWeek: true,
+                    "default": true
+                  }
+                });
+              } else if (result.items[i].start.date) {
+                eventsArray.push({
+                  title: val.summary.replace(/['"]+/g, "") + fillerDescription,
+                  start: val.start.date,
+                  end: val.end.date,
+                  backgroundColor: gc1,
+                  allDay: true,
+                  displayEventEnd: {
+                    month: true,
+                    basicWeek: true,
+                    "default": true
+                  }
+                });
+              }
             } else {
-              fillerDescription = "";
+              console.log("could not add due to lacking data ... event date/time or status not confirmed");
             }
-            
-            if (result.items[i].start.dateTime) {
-              eventsArray.push({
-                title: val.summary.replace(/['"]+/g, "") + fillerDescription,
-                start: val.start.dateTime,
-                end: val.end.dateTime,
-                backgroundColor: gc1,
-                displayEventEnd: {
-                  month: true,
-                  basicWeek: true,
-                  "default": true
-                }
-              });
-            } else if (result.items[i].start.date) {
-              eventsArray.push({
-                title: val.summary.replace(/['"]+/g, "") + fillerDescription,
-                start: val.start.date,
-                end: val.end.date,
-                backgroundColor: gc1,
-                allDay: true,
-                displayEventEnd: {
-                  month: true,
-                  basicWeek: true,
-                  "default": true
-                }
-              });
+          });
+          drawCalendar();
+        }
+      );
+    }
+
+
+
+    function drawCalendar() {
+      if (calendarAddedtoPage == false) {
+        calendarAddedtoPage = true;
+        console.log('Create NEW Calendar for dom ' + new Date())
+        $("#calendar").fullCalendar({
+          defaultView: "month",
+          header: {
+            left: "title",
+            center: "",
+            right: 'agendaDay,agendaWeek,month,prev,next'
+          },
+          buttonIcons: {
+            prev: "left-single-arrow",
+            next: "right-single-arrow",
+            prevYear: "left-double-arrow",
+            nextYear: "right-double-arrow"
+          },
+          eventMouseover: function(calEvent) {  
+            if (calEvent.allDay == false) {
+              var durationTime = moment(calEvent.start).format('h:mma') + " - " + moment(calEvent.end).format('h:mma')
+            } else {
+              var durationTime = 'All Day';
             }
-          } else {
-            console.log("could not add due to lacking data ... event date/time or status not confirmed");
+
+            var tooltip = '<div class="tooltipevent" style="position:absolute; z-index:1000; background-color:#666; color:#fff; text-align:center; padding:5px; border-radius:6px; opacity:0; transition:opacity .01s;">' + durationTime + '\n\n' + '</div>';
+            $("body").append(tooltip);
+            $(this).mouseover(function() {
+              $(this).css('z-index', 10000);
+              $('.tooltipevent').fadeIn('5000');
+              $('.tooltipevent').fadeTo('10', 0.8);
+            }).mousemove(function(e) {
+              $('.tooltipevent').css('top', e.pageY + 10);
+              $('.tooltipevent').css('left', e.pageX + 20);
+            });
+          },
+          eventMouseout: function() {
+            $(this).css('z-index', 8);
+            $('.tooltipevent').remove();
           }
         });
-        drawCalendar();
-      }
-    );
-  }
-
-
-
-  function drawCalendar() {
-    if (calendarAddedtoPage == false) {
-      calendarAddedtoPage = true;
-      console.log('Create NEW Calendar for dom ' + new Date())
-      $("#calendar").fullCalendar({
-        defaultView: "month",
-        header: {
-          left: "title",
-          center: "",
-          right: 'agendaDay,agendaWeek,month,prev,next'
-        },
-        buttonIcons: {
-          prev: "left-single-arrow",
-          next: "right-single-arrow",
-          prevYear: "left-double-arrow",
-          nextYear: "right-double-arrow"
-        },
-        eventMouseover: function(calEvent) {  
-          if (calEvent.allDay == false) {
-            var durationTime = moment(calEvent.start).format('h:mma') + " - " + moment(calEvent.end).format('h:mma')
-          } else {
-            var durationTime = 'All Day';
-          }
-
-          var tooltip = '<div class="tooltipevent" style="position:absolute; z-index:1000; background-color:#666; color:#fff; text-align:center; padding:5px; border-radius:6px; opacity:0; transition:opacity .01s;">' + durationTime + '\n\n' + '</div>';
-          $("body").append(tooltip);
-          $(this).mouseover(function() {
-            $(this).css('z-index', 10000);
-            $('.tooltipevent').fadeIn('5000');
-            $('.tooltipevent').fadeTo('10', 0.8);
-          }).mousemove(function(e) {
-            $('.tooltipevent').css('top', e.pageY + 10);
-            $('.tooltipevent').css('left', e.pageX + 20);
-          });
-        },
-        eventMouseout: function() {
-          $(this).css('z-index', 8);
-          $('.tooltipevent').remove();
-        }
-      });
-      $("#calendar").fullCalendar("removeEventSources");
-      $("#calendar").fullCalendar("addEventSource",eventsArray);
-      
-      setInterval(function(){
-        getData()
-      }, calendarupdateInterval)
-      
-    } else if (calendarAddedtoPage == true) {
-      console.log('Updating calendar data - ' + new Date())
-      
-      $("#calendar").fullCalendar('removeEvents');
-      $("#calendar").fullCalendar('addEventSource',eventsArray)
-    }  
-  }
-  
-  getData();
-});
+        $("#calendar").fullCalendar("removeEventSources");
+        $("#calendar").fullCalendar("addEventSource",eventsArray);
+        
+        setInterval(function(){
+          getData()
+        }, calendarupdateInterval)
+        
+      } else if (calendarAddedtoPage == true) {
+        console.log('Updating calendar data - ' + new Date())
+        
+        $("#calendar").fullCalendar('removeEvents');
+        $("#calendar").fullCalendar('addEventSource',eventsArray)
+      }  
+    }
+    
+    getData();
+  });
+}
 
 
 
 //* Gallery
 (function gallery() {
-  var i, e, d = document, s = "script";i = d.createElement("script");i.async = 1;
-  i.src = "https://cdn.curator.io/published/3e8bd139-4c09-4238-8cdf-07d62e6cabff_dgd092o6.js";
-  e = d.getElementsByTagName(s)[0];e.parentNode.insertBefore(i, e);
+  if (path.includes("gallery")) {
+    var i, e, d = document, s = "script";i = d.createElement("script");i.async = 1;
+    i.src = "https://cdn.curator.io/published/3e8bd139-4c09-4238-8cdf-07d62e6cabff_dgd092o6.js";
+    e = d.getElementsByTagName(s)[0];e.parentNode.insertBefore(i, e);
+  }
 
-  var i, e, d = document, s = "script";i = d.createElement("script");i.async = 1;
-  i.src = "https://cdn.curator.io/published/3e8bd139-4c09-4238-8cdf-07d62e6cabff_oglmd8dw.js";
-  e = d.getElementsByTagName(s)[0];e.parentNode.insertBefore(i, e);
+  if (path.includes("")) {
+    var i, e, d = document, s = "script";i = d.createElement("script");i.async = 1;
+    i.src = "https://cdn.curator.io/published/3e8bd139-4c09-4238-8cdf-07d62e6cabff_oglmd8dw.js";
+    e = d.getElementsByTagName(s)[0];e.parentNode.insertBefore(i, e);
+  }
 })();
 
+if (path.includes("gallery")) {
+  $(document).ready(function () {
+    changeElements();
 
+    $(window).resize(function() {
+      changeElements();
+    });
+  });
+
+  function changeElements(){    
+    if ($(window).width() <= 640) {
+      $('#removeMobile').hide();
+      $('#removeMobile').get(0).pause();
+    } else {
+      $('#removeMobile').show();
+      $('#removeMobile').get(0).play();
+    }
+  }
+}
 
 
 
