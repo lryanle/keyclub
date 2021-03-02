@@ -249,8 +249,9 @@ function randomColor(color1, color2) {
   };
 }
 
-randomColor("#003366", "#00aeef")
+randomColor("#005289", "#003366")
 var gc1 = getColor();
+randomColor("#00aeef", "#0090cd")
 var gc2 = getColor();
 
 
@@ -484,7 +485,17 @@ if (path.includes("gallery")) {
   }
 }
 
+function colorLinks(hex)
+{
+    var links = document.getElementsByTagName("a");
+    for(var i=0;i<links.length;i++)
+    {
+        if(links[i].href)
+        {
+            links[i].style.color = hex;  
+        }
+    }  
+}
 
 
-
-document.onload = randomBackgroundOnLoad(), /*cursorColor() --Deprecated,*/ homeHeaderGradient(), footer();
+document.onload = randomBackgroundOnLoad(), /*cursorColor() --Deprecated,*/ homeHeaderGradient(), footer()/*, colorLinks(gc1)*/;

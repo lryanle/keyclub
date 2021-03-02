@@ -83,6 +83,7 @@ body, .btn {
   font-size: 1.6875rem;
   /*cursor: none;*/
   overflow-x: hidden;
+  color: #231f20;
 }
 
 .btn {
@@ -479,7 +480,7 @@ section {
   .gallery .filters a:before,
   .gallery .filters a:after {
     content: '';
-    border-bottom: solid 1px #0E3F28;
+    border-bottom: solid 1px #729849;
     position: absolute;
     bottom: 0;
     width: 0;
@@ -529,7 +530,7 @@ section {
 .gallery .filter li a:hover,
 .gallery .filter li a:focus,
 .gallery .filter li a.active {
-  color: #0E3F28;
+  color: #729849;
   text-decoration: none;
 }
 
