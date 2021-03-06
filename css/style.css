@@ -57,6 +57,11 @@
   height: auto;
 }
 
+#calendar {
+  padding-left: 4%;
+  padding-right: 4%;
+}
+
 h1 {
   font-size: 6rem;
   font-weight: 100;
