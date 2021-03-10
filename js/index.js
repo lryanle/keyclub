@@ -497,5 +497,4 @@ function colorLinks(hex)
     }  
 }
 
-
 document.onload = randomBackgroundOnLoad(), /*cursorColor() --Deprecated,*/ homeHeaderGradient(), footer()/*, colorLinks(gc1)*/;
